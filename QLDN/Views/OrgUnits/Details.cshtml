@@ -1,0 +1,57 @@
+﻿@model QLDN.Models.OrgUnit
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>OrgUnit</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.OrgUnitName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.OrgUnitName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ManagerName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ManagerName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MaxQty)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MaxQty)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.OrgUnitParent)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.OrgUnitParent)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.OrgUnitID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

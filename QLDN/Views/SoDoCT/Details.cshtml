@@ -1,0 +1,226 @@
+﻿@model QLDN.Models.OrgUnit
+
+@{
+    Layout = null;
+    var childOrgUnit = ViewBag.childOrgUnit as List<QLDN.Models.OrgUnit>;
+    var managers = ViewBag.managers as List<QLDN.Models.Manager>;
+    var staffs = ViewBag.staffs as List<QLDN.Models.Staff>;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>OrgUnit</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.OrgUnitName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrgUnitName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.MaxQty)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MaxQty)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.StatusID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.StatusID)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrgUnitParent)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrgUnitParent)
+            </dd>
+        </dl>
+    </div>
+
+    @if (childOrgUnit == null || childOrgUnit.Count == 0)
+    {
+        <p>Children Org Unit: Not exist child org unit of current org unit</p>
+    }
+    else
+    {
+
+        <div>
+            <h4>ChildOrg</h4>
+            <hr />
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrgUnitName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ManagerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MaxQty)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StatusID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrgUnitParent)
+                    </th>
+                </tr>
+
+                @foreach (var item in childOrgUnit)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrgUnitName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ManagerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MaxQty)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StatusID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrgUnitParent)
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+        <hr />
+    }
+    @if (managers == null || managers.Count == 0)
+    {
+        <p>Manager: Not exist manager of current org unit</p>
+    }
+    else
+    {
+        <div>
+            <h4>Managers</h4>
+            <hr />
+            <table class="table">
+                <tr>
+                    <th>
+                        ManagerName
+                    </th>
+                    <th>
+                        StaffName
+                    </th>
+                    <th>
+                        model.Age
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        StatusID
+                    </th>
+
+                </tr>
+
+                @foreach (var item in staffs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Manager.ManagerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StaffName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Age)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StatusID)
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <hr />
+    }
+
+    @if (staffs == null || staffs.Count == 0)
+    {
+        <p>Staff: Not exist staff of current org unit</p>
+    }
+    else
+    {
+        <div>
+            <h4>Staffs</h4>
+            <hr />
+            <table class="table">
+                <tr>
+                    <th>
+                        ManagerName
+                    </th>
+                    <th>
+                        StaffName
+                    </th>
+                    <th>
+                        model.Age
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        StatusID
+                    </th>
+
+                </tr>
+
+                @foreach (var item in staffs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Manager.ManagerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StaffName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Age)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StatusID)
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+        <hr />
+    }
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
