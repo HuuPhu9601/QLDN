@@ -8,6 +8,8 @@ namespace QLDN.Controllers
 {
     public class StaffsController : Controller
     {
+        #region Nguyên tắc 5: Đảo ngược phụ thuộc
+
         private readonly IStaffService _staffService;
         private readonly IManagerService _managerService;
         public StaffsController()
@@ -15,6 +17,7 @@ namespace QLDN.Controllers
             _managerService = ManagerService.Init();
             _staffService = StaffService.Init();
         }
+        #endregion
 
         // GET: Staffs
         public ActionResult Index()

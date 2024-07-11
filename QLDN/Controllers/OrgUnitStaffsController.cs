@@ -7,6 +7,8 @@ namespace QLDN.Controllers
 {
     public class OrgUnitStaffsController : Controller
     {
+        #region Nguyên tắc 5: Đảo ngược phụ thuộc
+
         private readonly IAccept _accept;
         private readonly IOrgUnitService _orgUnitService;
         private readonly IStaffService _staffService;
@@ -18,6 +20,7 @@ namespace QLDN.Controllers
             _staffService = StaffService.Init();
             _orgStaffService = OrgStaffService.Init(_accept);
         }
+        #endregion
 
         // GET: OrgUnitStaffs
         public ActionResult Index()

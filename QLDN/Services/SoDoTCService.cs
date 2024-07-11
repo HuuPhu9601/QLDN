@@ -6,8 +6,9 @@ namespace QLDN.Services
 {
     public class SoDoTCService
     {
-        public static SoDoTCService _soDoTCService;
 
+
+        #region Nguyên tắc 5: đảo ngược phụ thuộc
         private readonly IOrgUnitService _orgUnitService;
         private readonly IManagerService _managerService;
         private readonly IStaffService _staffService;
@@ -17,11 +18,15 @@ namespace QLDN.Services
             _managerService = managerService;
             _staffService = staffService;
         }
+        #endregion
 
+        #region Desgin Partten: Singoten
+        public static SoDoTCService _soDoTCService;
         public static SoDoTCService Init(IOrgUnitService orgUnitService, IManagerService managerService, IStaffService staffService)
         {
             return _soDoTCService == null ? new SoDoTCService(orgUnitService, managerService, staffService) : _soDoTCService;
         }
+        #endregion
 
         public string SoDo(int id, out OrgUnit orgUnit, out List<OrgUnit> childOrgUnit, out List<Manager> managers, out List<Staff> staffs)
         {

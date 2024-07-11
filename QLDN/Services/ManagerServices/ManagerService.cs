@@ -7,6 +7,8 @@ namespace QLDN.Services
 {
     public class ManagerService : IManagerService
     {
+        #region Design partten: Singoten
+
         public static ManagerService _managerService;
 
         private ManagerService()
@@ -17,6 +19,7 @@ namespace QLDN.Services
         {
             return _managerService == null ? new ManagerService() : _managerService;
         }
+        #endregion
 
         public List<Manager> GetAll()
         {

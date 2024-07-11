@@ -8,6 +8,8 @@ namespace QLDN.Controllers
 {
     public class SoDoCTController : Controller
     {
+        #region Nguyên tắc 5: Đảo ngược phụ thuộc
+
         private readonly OrgUnitService _orgUnitService;
         private readonly IManagerService _managerService;
         private readonly IStaffService _staffService;
@@ -20,6 +22,8 @@ namespace QLDN.Controllers
             _staffService = StaffService.Init();
             _soDoTCService = SoDoTCService.Init(_orgUnitService, _managerService, _staffService);
         }
+        #endregion
+
         // GET: SoDoCT
         public ActionResult Index()
         {

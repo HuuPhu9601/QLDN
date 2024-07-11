@@ -7,12 +7,14 @@ namespace QLDN.Controllers
 {
     public class ManagersController : Controller
     {
-        private IManagerService _managerService;
+        #region Nguyên tắc 5: Đảo ngược phụ thuộc
 
+        private IManagerService _managerService;
         public ManagersController()
         {
             _managerService = ManagerService.Init();
         }
+        #endregion
 
         // GET: Managers
         public ActionResult Index()

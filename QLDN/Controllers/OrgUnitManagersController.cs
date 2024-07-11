@@ -7,6 +7,8 @@ namespace QLDN.Controllers
 {
     public class OrgUnitManagersController : Controller
     {
+        #region Nguyên tắc 5: Đảo ngược phụ thuộc
+
         private readonly IAccept _accept;
         private readonly IOrgUnitService _orgUnitService;
         private readonly IManagerService _managerService;
@@ -19,6 +21,8 @@ namespace QLDN.Controllers
             _managerService = ManagerService.Init();
             _orgManagerService = OrgManagerService.Init(_accept);
         }
+        #endregion
+
         // GET: OrgUnitManagers
         public ActionResult Index()
         {

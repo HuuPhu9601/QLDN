@@ -8,18 +8,24 @@ namespace QLDN.Services
 {
     public class OrgStaffService : IOrgStaffService
     {
-        private readonly IAccept _accept;
+        #region Design partten: Singoten
+
         private static OrgStaffService _ins;
+
+        #region Nguyên tắc 5: Đảo ngược phụ thuộc
+        private readonly IAccept _accept;
 
         private OrgStaffService(IAccept accept)
         {
             _accept = accept;
         }
+        #endregion
 
         public static OrgStaffService Init(IAccept accept)
         {
             return _ins == null ? new OrgStaffService(accept) : _ins;
         }
+        #endregion
 
         public List<OrgUnitStaff> GetAll()
         {

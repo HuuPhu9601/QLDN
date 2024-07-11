@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace QLDN.Services
 {
+    //Nguyên tắc 2: Đóng mở
     public interface IAccept
     {
         bool CheckAccept(int id);
@@ -13,6 +14,8 @@ namespace QLDN.Services
 
     public class OrgUnitAccept : IAccept
     {
+        #region Design partten: Singoten
+
         private static OrgUnitAccept _orgUnitAccept;
         private OrgUnitAccept()
         {
@@ -23,6 +26,9 @@ namespace QLDN.Services
             if (_orgUnitAccept == null) _orgUnitAccept = new OrgUnitAccept();
             return _orgUnitAccept;
         }
+        #endregion
+
+        //Nguyên tắc 2: Đóng mở
         public bool CheckAccept(int id)
         {
             int maxQty = DataProvider.Ins.DB.OrgUnits.Find(id).MaxQty;

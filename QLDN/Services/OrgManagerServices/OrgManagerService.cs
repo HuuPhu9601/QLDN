@@ -7,17 +7,23 @@ namespace QLDN.Services
 {
     public class OrgManagerService : IOrgManagerService
     {
+        #region Design partten: Singoten
+
         private readonly IAccept _accept;
+        #region Nguyên tắc 5: Đảo ngược phụ thuộc
+
         private static OrgManagerService _orgManagerService;
         private OrgManagerService(IAccept accept)
         {
             _accept = accept;
         }
+        #endregion
 
         public static OrgManagerService Init(IAccept accept)
         {
             return _orgManagerService == null ? new OrgManagerService(accept) : _orgManagerService;
         }
+        #endregion
 
         public List<OrgUnitManager> GetAll()
         {

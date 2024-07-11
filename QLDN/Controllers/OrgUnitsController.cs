@@ -6,12 +6,15 @@ namespace QLDN.Controllers
 {
     public class OrgUnitsController : Controller
     {
+        #region Nguyên tắc 5: Đảo ngược phụ thuộc
+
         private readonly IOrgUnitService _orgUnitService;
 
         public OrgUnitsController()
         {
             _orgUnitService = OrgUnitService.Init();
         }
+        #endregion
 
         // GET: OrgUnits
         public ActionResult Index()
