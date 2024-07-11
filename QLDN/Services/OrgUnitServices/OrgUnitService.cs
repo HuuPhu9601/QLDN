@@ -14,7 +14,7 @@ namespace QLDN.Services
 
     public class OrgUnitAccept : IAccept
     {
-        #region Design partten: Singoten
+        #region Design partten: singleton
 
         private static OrgUnitAccept _orgUnitAccept;
         private OrgUnitAccept()

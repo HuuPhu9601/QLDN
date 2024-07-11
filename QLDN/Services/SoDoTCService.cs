@@ -20,7 +20,7 @@ namespace QLDN.Services
         }
         #endregion
 
-        #region Desgin Partten: Singoten
+        #region Desgin Partten: singleton
         public static SoDoTCService _soDoTCService;
         public static SoDoTCService Init(IOrgUnitService orgUnitService, IManagerService managerService, IStaffService staffService)
         {

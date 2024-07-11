@@ -7,7 +7,7 @@ namespace QLDN.Services
 {
     public class OrgManagerService : IOrgManagerService
     {
-        #region Design partten: Singoten
+        #region Design partten: singleton
 
         private readonly IAccept _accept;
         #region Nguyên tắc 5: Đảo ngược phụ thuộc

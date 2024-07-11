@@ -7,7 +7,7 @@ namespace QLDN.Services
 {
     public class ManagerService : IManagerService
     {
-        #region Design partten: Singoten
+        #region Design partten: Singleton
 
         public static ManagerService _managerService;
 

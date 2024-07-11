@@ -8,7 +8,7 @@ namespace QLDN.Services
 {
     public class OrgStaffService : IOrgStaffService
     {
-        #region Design partten: Singoten
+        #region Design partten: singleton
 
         private static OrgStaffService _ins;
 
