@@ -1,17 +1,26 @@
 ﻿using QLDN.Models;
-using System;
+using QLDN.Services.StaffServices;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace QLDN.Services
 {
     public class SoDoTCService
     {
-        private readonly OrgUnitService orgUnitService;
-        public SoDoTCService()
+        public static SoDoTCService _soDoTCService;
+
+        private readonly IOrgUnitService _orgUnitService;
+        private readonly IManagerService _managerService;
+        private readonly IStaffService _staffService;
+        private SoDoTCService(IOrgUnitService orgUnitService, IManagerService managerService, IStaffService staffService)
         {
-            orgUnitService = new OrgUnitService();
+            _orgUnitService = orgUnitService;
+            _managerService = managerService;
+            _staffService = staffService;
+        }
+
+        public static SoDoTCService Init(IOrgUnitService orgUnitService, IManagerService managerService, IStaffService staffService)
+        {
+            return _soDoTCService == null ? new SoDoTCService(orgUnitService, managerService, staffService) : _soDoTCService;
         }
 
         public string SoDo(int id, out OrgUnit orgUnit, out List<OrgUnit> childOrgUnit, out List<Manager> managers, out List<Staff> staffs)
@@ -21,26 +30,14 @@ namespace QLDN.Services
             managers = null;
             staffs = null;
 
-            orgUnit = orgUnitService.GetOne(id);
+            orgUnit = _orgUnitService.GetOne(id);
             if (orgUnit == null) return "Org Unit not found";
 
-            childOrgUnit = orgUnitService.GetOneByParentOrg(orgUnit.OrgUnitID);
+            childOrgUnit = _orgUnitService.GetByParent(orgUnit.OrgUnitID);
 
-            managers = (from org in DataProvider.Ins.DB.OrgUnits
-                         join orgmanager in DataProvider.Ins.DB.OrgUnitManagers on org.OrgUnitID equals orgmanager.OrgUnitID
-                         join manager in DataProvider.Ins.DB.Managers on orgmanager.ManagerID equals manager.ManagerID
-                         join orgstaff in DataProvider.Ins.DB.OrgUnitStaffs on org.OrgUnitID equals orgstaff.OrgUnitID
-                         join staff in DataProvider.Ins.DB.Staffs on orgstaff.StaffID equals staff.StaffID
-                         where org.OrgUnitID == id
-                         select manager).ToList();
+            managers = _managerService.GetByParent(id);
 
-            staffs = (from org in DataProvider.Ins.DB.OrgUnits
-                              join orgmanager in DataProvider.Ins.DB.OrgUnitManagers on org.OrgUnitID equals orgmanager.OrgUnitID
-                              join manager in DataProvider.Ins.DB.Managers on orgmanager.ManagerID equals manager.ManagerID
-                              join orgstaff in DataProvider.Ins.DB.OrgUnitStaffs on org.OrgUnitID equals orgstaff.OrgUnitID
-                              join staff in DataProvider.Ins.DB.Staffs on orgstaff.StaffID equals staff.StaffID
-                              where org.OrgUnitID == id
-                              select staff).ToList();
+            staffs = _staffService.GetByParent(id);
 
             return string.Empty;
         }

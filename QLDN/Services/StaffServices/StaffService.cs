@@ -1,14 +1,24 @@
 ﻿using QLDN.Models;
+using QLDN.Services.StaffServices;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace QLDN.Services
 {
-    public class StaffService : IBaseServices<Staff>
+    public class StaffService : IStaffService
     {
+        private static StaffService _staffService;
+
+        private StaffService()
+        {
+        }
+
+        public static StaffService Init()
+        {
+            return _staffService == null ? new StaffService() : _staffService;
+        }
+
         public List<Staff> GetAll()
         {
             return DataProvider.Ins.DB.Staffs.Where(x => x.StatusID != StatusType.Blocked).ToList();
@@ -17,11 +27,6 @@ namespace QLDN.Services
         public Staff GetOne(int id)
         {
             return DataProvider.Ins.DB.Staffs.Find(id);
-        }
-
-        public List<Staff> GetOneByOrgManagerID(int ManagerID)
-        {
-            return DataProvider.Ins.DB.Staffs.Where(x => x.ManagerID == ManagerID).ToList();
         }
 
         public string Insert(Staff staff)
@@ -82,6 +87,15 @@ namespace QLDN.Services
             }
 
             return msg;
+        }
+
+        public List<Staff> GetByParent(int id)
+        {
+            return (from org in DataProvider.Ins.DB.OrgUnits
+                    join orgstaff in DataProvider.Ins.DB.OrgUnitStaffs on org.OrgUnitID equals orgstaff.OrgUnitID
+                    join staff in DataProvider.Ins.DB.Staffs on orgstaff.StaffID equals staff.StaffID
+                    where org.OrgUnitID == id
+                    select staff).ToList();
         }
     }
 }

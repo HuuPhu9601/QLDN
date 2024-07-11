@@ -3,17 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace QLDN.Services
 {
-    public class OrgStaffService : IBaseServices<OrgUnitStaff>
+    public class OrgStaffService : IOrgStaffService
     {
-        private readonly OrgUnitService orgUnitService;
-        public OrgStaffService()
+        private readonly IAccept _accept;
+        private static OrgStaffService _ins;
+
+        private OrgStaffService(IAccept accept)
         {
-            orgUnitService = new OrgUnitService();
+            _accept = accept;
         }
+
+        public static OrgStaffService Init(IAccept accept)
+        {
+            return _ins == null ? new OrgStaffService(accept) : _ins;
+        }
+
         public List<OrgUnitStaff> GetAll()
         {
             return DataProvider.Ins.DB.OrgUnitStaffs.Where(x => x.StatusID != StatusType.Blocked).ToList();
@@ -28,7 +35,9 @@ namespace QLDN.Services
         {
             string msg = string.Empty;
             if (orgUnitStaff == null) return "Org Unit is null";
-            if (!orgUnitService.AccessInsert(orgUnitStaff.OrgUnitID)) return "org unit overload human";
+
+            bool isAccepted = _accept.CheckAccept(orgUnitStaff.OrgUnitID);
+            if (!isAccepted) return "org unit overload human";
             try
             {
                 DataProvider.Ins.DB.OrgUnitStaffs.Add(orgUnitStaff);
@@ -49,7 +58,10 @@ namespace QLDN.Services
 
             OrgUnitStaff findResult = DataProvider.Ins.DB.OrgUnitStaffs.Find(id);
             if (findResult == null) return "Org Unit not found";
-            if (!orgUnitService.AccessInsert(orgUnitStaff.OrgUnitID)) return "org unit overload human";
+
+            bool isAccepted = _accept.CheckAccept(orgUnitStaff.OrgUnitID);
+            if (!isAccepted) return "org unit overload human";
+
             findResult.OrgUnitID = orgUnitStaff.OrgUnitID;
             findResult.StaffID = orgUnitStaff.StatusID;
 

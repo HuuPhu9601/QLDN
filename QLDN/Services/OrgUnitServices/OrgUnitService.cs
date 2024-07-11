@@ -3,12 +3,48 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace QLDN.Services
 {
-    public class OrgUnitService : IBaseServices<OrgUnit>
+    public interface IAccept
     {
+        bool CheckAccept(int id);
+    }
+
+    public class OrgUnitAccept : IAccept
+    {
+        private static OrgUnitAccept _orgUnitAccept;
+        private OrgUnitAccept()
+        {
+        }
+
+        public static OrgUnitAccept Init()
+        {
+            if (_orgUnitAccept == null) _orgUnitAccept = new OrgUnitAccept();
+            return _orgUnitAccept;
+        }
+        public bool CheckAccept(int id)
+        {
+            int maxQty = DataProvider.Ins.DB.OrgUnits.Find(id).MaxQty;
+            var currManagerAndStaff = from org in DataProvider.Ins.DB.OrgUnits join orgmanager in DataProvider.Ins.DB.OrgUnitManagers on org.OrgUnitID equals orgmanager.OrgUnitID join orgstaff in DataProvider.Ins.DB.OrgUnitStaffs on org.OrgUnitID equals orgstaff.OrgUnitID where org.OrgUnitID == id select org;
+
+            int currCount = currManagerAndStaff == null ? 0 : currManagerAndStaff.Count();
+            return currCount < maxQty;
+        }
+    }
+
+    public class OrgUnitService : IOrgUnitService
+    {
+        public static OrgUnitService _orgUnitService;
+        private OrgUnitService()
+        {
+        }
+
+        public static OrgUnitService Init()
+        {
+            return _orgUnitService == null ? new OrgUnitService() : _orgUnitService;
+        }
+
         public List<OrgUnit> GetAll()
         {
             return DataProvider.Ins.DB.OrgUnits.Where(x => x.StatusID != StatusType.Blocked).ToList();
@@ -19,18 +55,9 @@ namespace QLDN.Services
             return DataProvider.Ins.DB.OrgUnits.Find(id);
         }
 
-        public bool AccessInsert(int id)
+        public List<OrgUnit> GetByParent(int id)
         {
-            int maxQty = DataProvider.Ins.DB.OrgUnits.Find(id).MaxQty;
-            var currManagerAndStaff = from org in DataProvider.Ins.DB.OrgUnits join orgmanager in DataProvider.Ins.DB.OrgUnitManagers on org.OrgUnitID equals orgmanager.OrgUnitID join orgstaff in DataProvider.Ins.DB.OrgUnitStaffs on org.OrgUnitID equals orgstaff.OrgUnitID where org.OrgUnitID == id select org;
-            
-            int currCount = currManagerAndStaff == null ? 0: currManagerAndStaff.Count();
-            return currCount < maxQty;
-        }
-
-        public List<OrgUnit> GetOneByParentOrg(int parentOrgID)
-        {
-            return DataProvider.Ins.DB.OrgUnits.Where(x => x.OrgUnitParent == parentOrgID).ToList();
+            return DataProvider.Ins.DB.OrgUnits.Where(x => x.OrgUnitParent == id).ToList();
         }
 
         public string Insert(OrgUnit orgUnit)
@@ -95,5 +122,6 @@ namespace QLDN.Services
 
             return msg;
         }
+
     }
 }

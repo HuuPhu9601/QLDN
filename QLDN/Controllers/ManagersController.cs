@@ -1,36 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using QLDN.Models;
+﻿using QLDN.Models;
 using QLDN.Services;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace QLDN.Controllers
 {
     public class ManagersController : Controller
     {
-        private ManagerService managerService;
+        private IManagerService _managerService;
 
         public ManagersController()
         {
-            managerService = new ManagerService();
+            _managerService = ManagerService.Init();
         }
-        
+
         // GET: Managers
         public ActionResult Index()
         {
-            var managers = managerService.GetAll();
+            var managers = _managerService.GetAll();
             return View(managers.ToList());
         }
 
         // GET: Managers/Details/5
         public ActionResult Details(int id)
         {
-            var manager = managerService.GetOne(id);
+            var manager = _managerService.GetOne(id);
             return View(manager);
         }
 
@@ -50,8 +44,8 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = managerService.Insert(manager);
-                if(msg.Length > 0) return View(msg);
+                string msg = _managerService.Insert(manager);
+                if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
             return View(manager);
@@ -61,7 +55,7 @@ namespace QLDN.Controllers
         public ActionResult Edit(int id)
         {
 
-            Manager manager = managerService.GetOne(id);
+            Manager manager = _managerService.GetOne(id);
             if (manager == null)
             {
                 return HttpNotFound();
@@ -78,8 +72,8 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg=managerService.Update(manager.ManagerID, manager);
-                if(msg.Length > 0) return View(msg);
+                string msg = _managerService.Update(manager.ManagerID, manager);
+                if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
             return View(manager);
@@ -88,7 +82,7 @@ namespace QLDN.Controllers
         // GET: Managers/Delete/5
         public ActionResult Delete(int id)
         {
-            Manager manager =managerService.GetOne(id);
+            Manager manager = _managerService.GetOne(id);
             if (manager == null)
             {
                 return HttpNotFound();
@@ -101,8 +95,8 @@ namespace QLDN.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            string msg = managerService.Remove(id);
-            if(msg.Length > 0) return View(msg);
+            string msg = _managerService.Remove(id);
+            if (msg.Length > 0) return View(msg);
             return RedirectToAction("Index");
         }
 

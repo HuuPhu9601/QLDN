@@ -1,29 +1,31 @@
 ﻿using QLDN.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace QLDN.Services
 {
-    public class ManagerService : IBaseServices<Manager>
+    public class ManagerService : IManagerService
     {
-        
+        public static ManagerService _managerService;
+
+        private ManagerService()
+        {
+        }
+
+        public static ManagerService Init()
+        {
+            return _managerService == null ? new ManagerService() : _managerService;
+        }
+
         public List<Manager> GetAll()
         {
-            return DataProvider.Ins.DB.Managers.Where(x=>x.StatusID != StatusType.Blocked).ToList();
+            return DataProvider.Ins.DB.Managers.Where(x => x.StatusID != StatusType.Blocked).ToList();
         }
 
         public Manager GetOne(int id)
         {
             return DataProvider.Ins.DB.Managers.Find(id);
-        }
-
-        public List<Manager> GetOneByOrgUnitID(int OrgUnitID)
-        {
-            var managers = from manager in DataProvider.Ins.DB.Managers join orgmanager in DataProvider.Ins.DB.OrgUnitManagers on manager.ManagerID equals orgmanager.ManagerID where orgmanager.OrgUnitID == OrgUnitID select manager;
-            return managers.ToList();
         }
 
         public string Insert(Manager Manager)
@@ -84,6 +86,15 @@ namespace QLDN.Services
             }
 
             return msg;
+        }
+
+        public List<Manager> GetByParent(int id)
+        {
+            return (from org in DataProvider.Ins.DB.OrgUnits
+                    join orgmanager in DataProvider.Ins.DB.OrgUnitManagers on org.OrgUnitID equals orgmanager.OrgUnitID
+                    join manager in DataProvider.Ins.DB.Managers on orgmanager.ManagerID equals manager.ManagerID
+                    where org.OrgUnitID == id
+                    select manager).ToList();
         }
     }
 }

@@ -1,38 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using QLDN.Models;
+﻿using QLDN.Models;
 using QLDN.Services;
+using QLDN.Services.StaffServices;
+using System.Web.Mvc;
 
 namespace QLDN.Controllers
 {
     public class OrgUnitStaffsController : Controller
     {
-        private readonly OrgUnitService orgUnitService;
-        private readonly StaffService staffService;
-        private readonly OrgStaffService orgStaffService;
+        private readonly IAccept _accept;
+        private readonly IOrgUnitService _orgUnitService;
+        private readonly IStaffService _staffService;
+        private readonly IOrgStaffService _orgStaffService;
         public OrgUnitStaffsController()
         {
-            orgUnitService = new OrgUnitService();
-            staffService = new StaffService();
-            orgStaffService = new OrgStaffService();
+            _accept = OrgUnitAccept.Init();
+            _orgUnitService = OrgUnitService.Init();
+            _staffService = StaffService.Init();
+            _orgStaffService = OrgStaffService.Init(_accept);
         }
 
         // GET: OrgUnitStaffs
         public ActionResult Index()
         {
-            return View(orgStaffService.GetAll());
+            return View(_orgStaffService.GetAll());
         }
 
         // GET: OrgUnitStaffs/Details/5
         public ActionResult Details(int id)
         {
-            OrgUnitStaff orgUnitStaff = orgStaffService.GetOne(id);
+            OrgUnitStaff orgUnitStaff = _orgStaffService.GetOne(id);
             if (orgUnitStaff == null)
             {
                 return HttpNotFound();
@@ -43,8 +39,8 @@ namespace QLDN.Controllers
         // GET: OrgUnitStaffs/Create
         public ActionResult Create()
         {
-            ViewBag.OrgUnitID = new SelectList(orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName");
-            ViewBag.StaffID = new SelectList(staffService.GetAll(), "StaffID", "StaffName");
+            ViewBag.OrgUnitID = new SelectList(_orgStaffService.GetAll(), "OrgUnitID", "OrgUnitName");
+            ViewBag.StaffID = new SelectList(_staffService.GetAll(), "StaffID", "StaffName");
             return View();
         }
 
@@ -57,26 +53,26 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = orgStaffService.Insert(orgUnitStaff);
+                string msg = _orgStaffService.Insert(orgUnitStaff);
                 if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.OrgUnitID = new SelectList(orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitStaff.OrgUnitID);
-            ViewBag.StaffID = new SelectList(staffService.GetAll(), "StaffID", "StaffName", orgUnitStaff.StaffID);
+            ViewBag.OrgUnitID = new SelectList(_orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitStaff.OrgUnitID);
+            ViewBag.StaffID = new SelectList(_staffService.GetAll(), "StaffID", "StaffName", orgUnitStaff.StaffID);
             return View(orgUnitStaff);
         }
 
         // GET: OrgUnitStaffs/Edit/5
         public ActionResult Edit(int id)
         {
-            OrgUnitStaff orgUnitStaff = orgStaffService.GetOne(id);
+            OrgUnitStaff orgUnitStaff = _orgStaffService.GetOne(id);
             if (orgUnitStaff == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OrgUnitID = new SelectList(orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitStaff.OrgUnitID);
-            ViewBag.StaffID = new SelectList(staffService.GetAll(), "StaffID", "StaffName", orgUnitStaff.StaffID);
+            ViewBag.OrgUnitID = new SelectList(_orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitStaff.OrgUnitID);
+            ViewBag.StaffID = new SelectList(_staffService.GetAll(), "StaffID", "StaffName", orgUnitStaff.StaffID);
             return View(orgUnitStaff);
         }
 
@@ -89,19 +85,19 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-               string msg = orgStaffService.Update(orgUnitStaff.OrgUnitStaffID, orgUnitStaff);
-                if(msg.Length > 0) return View(msg);
+                string msg = _orgStaffService.Update(orgUnitStaff.OrgUnitStaffID, orgUnitStaff);
+                if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
-            ViewBag.OrgUnitID = new SelectList(orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitStaff.OrgUnitID);
-            ViewBag.StaffID = new SelectList(staffService.GetAll(), "StaffID", "StaffName", orgUnitStaff.StaffID);
+            ViewBag.OrgUnitID = new SelectList(_orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitStaff.OrgUnitID);
+            ViewBag.StaffID = new SelectList(_staffService.GetAll(), "StaffID", "StaffName", orgUnitStaff.StaffID);
             return View(orgUnitStaff);
         }
 
         // GET: OrgUnitStaffs/Delete/5
         public ActionResult Delete(int id)
         {
-            OrgUnitStaff orgUnitStaff = orgStaffService.GetOne(id);
+            OrgUnitStaff orgUnitStaff = _orgStaffService.GetOne(id);
             if (orgUnitStaff == null)
             {
                 return HttpNotFound();
@@ -114,8 +110,8 @@ namespace QLDN.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            string msg = orgStaffService.Remove(id);
-            if(msg.Length > 0) return View(msg);
+            string msg = _orgStaffService.Remove(id);
+            if (msg.Length > 0) return View(msg);
             return RedirectToAction("Index");
         }
 

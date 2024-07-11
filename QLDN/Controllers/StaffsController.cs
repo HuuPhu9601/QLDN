@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using QLDN.Models;
+﻿using QLDN.Models;
 using QLDN.Services;
+using QLDN.Services.StaffServices;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace QLDN.Controllers
 {
     public class StaffsController : Controller
     {
-        private readonly StaffService staffService;
-        private readonly ManagerService managerService;
+        private readonly IStaffService _staffService;
+        private readonly IManagerService _managerService;
         public StaffsController()
         {
-            managerService = new ManagerService();
-            staffService = new StaffService();
+            _managerService = ManagerService.Init();
+            _staffService = StaffService.Init();
         }
 
         // GET: Staffs
         public ActionResult Index()
         {
-            var staffs = staffService.GetAll();
+            var staffs = _staffService.GetAll();
             return View(staffs.ToList());
         }
 
         // GET: Staffs/Details/5
         public ActionResult Details(int id)
         {
-            Staff staff = staffService.GetOne(id);
+            Staff staff = _staffService.GetOne(id);
             if (staff == null)
             {
                 return HttpNotFound();
@@ -42,7 +37,7 @@ namespace QLDN.Controllers
         // GET: Staffs/Create
         public ActionResult Create()
         {
-            ViewBag.ManagerID = new SelectList(managerService.GetAll(), "ManagerID", "ManagerName");
+            ViewBag.ManagerID = new SelectList(_managerService.GetAll(), "ManagerID", "ManagerName");
             return View();
         }
 
@@ -55,24 +50,24 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-               string msg = staffService.Insert(staff);
-                if(msg.Length > 0) return View(msg);
+                string msg = _staffService.Insert(staff);
+                if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ManagerID = new SelectList(managerService.GetAll(), "ManagerID", "ManagerName", staff.ManagerID);
+            ViewBag.ManagerID = new SelectList(_managerService.GetAll(), "ManagerID", "ManagerName", staff.ManagerID);
             return View(staff);
         }
 
         // GET: Staffs/Edit/5
         public ActionResult Edit(int id)
         {
-            Staff staff = staffService.GetOne(id);
+            Staff staff = _staffService.GetOne(id);
             if (staff == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ManagerID = new SelectList(managerService.GetAll(), "ManagerID", "ManagerName", staff.ManagerID);
+            ViewBag.ManagerID = new SelectList(_managerService.GetAll(), "ManagerID", "ManagerName", staff.ManagerID);
             return View(staff);
         }
 
@@ -85,18 +80,18 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = staffService.Update(staff.StaffID, staff);
+                string msg = _staffService.Update(staff.StaffID, staff);
                 if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
-            ViewBag.ManagerID = new SelectList(managerService.GetAll(), "ManagerID", "ManagerName", staff.ManagerID);
+            ViewBag.ManagerID = new SelectList(_managerService.GetAll(), "ManagerID", "ManagerName", staff.ManagerID);
             return View(staff);
         }
 
         // GET: Staffs/Delete/5
         public ActionResult Delete(int id)
         {
-            Staff staff = staffService.GetOne(id);
+            Staff staff = _staffService.GetOne(id);
             if (staff == null)
             {
                 return HttpNotFound();
@@ -109,8 +104,8 @@ namespace QLDN.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            string msg = staffService.Remove(id);
-            if(msg.Length > 0) return View(msg);
+            string msg = _staffService.Remove(id);
+            if (msg.Length > 0) return View(msg);
             return RedirectToAction("Index");
         }
 

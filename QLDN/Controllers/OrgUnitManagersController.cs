@@ -1,39 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using QLDN.Models;
+﻿using QLDN.Models;
 using QLDN.Services;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace QLDN.Controllers
 {
     public class OrgUnitManagersController : Controller
     {
-        private readonly OrgUnitService orgUnitService;
-        private readonly ManagerService managerService;
-        private readonly OrgManagerService orgManagerService;
+        private readonly IAccept _accept;
+        private readonly IOrgUnitService _orgUnitService;
+        private readonly IManagerService _managerService;
+        private readonly IOrgManagerService _orgManagerService;
 
         public OrgUnitManagersController()
         {
-            orgUnitService = new OrgUnitService();
-            managerService = new ManagerService();
-            orgManagerService = new OrgManagerService();
+            _accept = OrgUnitAccept.Init();
+            _orgUnitService = OrgUnitService.Init();
+            _managerService = ManagerService.Init();
+            _orgManagerService = OrgManagerService.Init(_accept);
         }
         // GET: OrgUnitManagers
         public ActionResult Index()
         {
-            var orgUnitManagers = orgManagerService.GetAll();
+            var orgUnitManagers = _orgManagerService.GetAll();
             return View(orgUnitManagers.ToList());
         }
 
         // GET: OrgUnitManagers/Details/5
         public ActionResult Details(int id)
         {
-            OrgUnitManager orgUnitManager = orgManagerService.GetOne(id);
+            OrgUnitManager orgUnitManager = _orgManagerService.GetOne(id);
             if (orgUnitManager == null) return HttpNotFound();
             return View(orgUnitManager);
         }
@@ -41,8 +37,8 @@ namespace QLDN.Controllers
         // GET: OrgUnitManagers/Create
         public ActionResult Create()
         {
-            ViewBag.ManagerID = new SelectList(managerService.GetAll(), "ManagerID", "ManagerName");
-            ViewBag.OrgUnitID = new SelectList(orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName");
+            ViewBag.ManagerID = new SelectList(_managerService.GetAll(), "ManagerID", "ManagerName");
+            ViewBag.OrgUnitID = new SelectList(_orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName");
             return View();
         }
 
@@ -55,26 +51,26 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = orgManagerService.Insert(orgUnitManager);
-                if(msg.Length > 0) return View(msg);
+                string msg = _orgManagerService.Insert(orgUnitManager);
+                if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ManagerID = new SelectList(managerService.GetAll(), "ManagerID", "ManagerName", orgUnitManager.ManagerID);
-            ViewBag.OrgUnitID = new SelectList(orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitManager.OrgUnitID);
+            ViewBag.ManagerID = new SelectList(_managerService.GetAll(), "ManagerID", "ManagerName", orgUnitManager.ManagerID);
+            ViewBag.OrgUnitID = new SelectList(_orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitManager.OrgUnitID);
             return View(orgUnitManager);
         }
 
         // GET: OrgUnitManagers/Edit/5
         public ActionResult Edit(int id)
         {
-            OrgUnitManager orgUnitManager = orgManagerService.GetOne(id);
+            OrgUnitManager orgUnitManager = _orgManagerService.GetOne(id);
             if (orgUnitManager == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ManagerID = new SelectList(managerService.GetAll(), "ManagerID", "ManagerName", orgUnitManager.ManagerID);
-            ViewBag.OrgUnitID = new SelectList(orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitManager.OrgUnitID);
+            ViewBag.ManagerID = new SelectList(_managerService.GetAll(), "ManagerID", "ManagerName", orgUnitManager.ManagerID);
+            ViewBag.OrgUnitID = new SelectList(_orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitManager.OrgUnitID);
             return View(orgUnitManager);
         }
 
@@ -87,19 +83,19 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = orgManagerService.Update(orgUnitManager.OrgUnitManagerID, orgUnitManager);
-                if(msg.Length > 0) return View(msg);
+                string msg = _orgManagerService.Update(orgUnitManager.OrgUnitManagerID, orgUnitManager);
+                if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
-            ViewBag.ManagerID = new SelectList(managerService.GetAll(), "ManagerID", "ManagerName", orgUnitManager.ManagerID);
-            ViewBag.OrgUnitID = new SelectList(orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitManager.OrgUnitID);
+            ViewBag.ManagerID = new SelectList(_managerService.GetAll(), "ManagerID", "ManagerName", orgUnitManager.ManagerID);
+            ViewBag.OrgUnitID = new SelectList(_orgUnitService.GetAll(), "OrgUnitID", "OrgUnitName", orgUnitManager.OrgUnitID);
             return View(orgUnitManager);
         }
 
         // GET: OrgUnitManagers/Delete/5
         public ActionResult Delete(int id)
         {
-            OrgUnitManager orgUnitManager = orgManagerService.GetOne(id);
+            OrgUnitManager orgUnitManager = _orgManagerService.GetOne(id);
             if (orgUnitManager == null)
             {
                 return HttpNotFound();
@@ -112,8 +108,8 @@ namespace QLDN.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            string msg = orgManagerService.Remove(id);
-            if(msg.Length > 0) return View(msg);
+            string msg = _orgManagerService.Remove(id);
+            if (msg.Length > 0) return View(msg);
             return RedirectToAction("Index");
         }
 

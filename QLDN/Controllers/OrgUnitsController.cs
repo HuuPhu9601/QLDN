@@ -1,35 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using QLDN.Models;
+﻿using QLDN.Models;
 using QLDN.Services;
+using System.Web.Mvc;
 
 namespace QLDN.Controllers
 {
     public class OrgUnitsController : Controller
     {
-        private readonly OrgUnitService orgUnitService;
+        private readonly IOrgUnitService _orgUnitService;
 
         public OrgUnitsController()
         {
-            orgUnitService = new OrgUnitService();
+            _orgUnitService = OrgUnitService.Init();
         }
 
         // GET: OrgUnits
         public ActionResult Index()
         {
-            return View(orgUnitService.GetAll());
+            return View(_orgUnitService.GetAll());
         }
 
         // GET: OrgUnits/Details/5
         public ActionResult Details(int id)
         {
-            OrgUnit orgUnit =orgUnitService.GetOne(id);
+            OrgUnit orgUnit = _orgUnitService.GetOne(id);
             if (orgUnit == null)
             {
                 return HttpNotFound();
@@ -52,8 +45,8 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = orgUnitService.Insert(orgUnit);
-                if(msg.Length > 0) return View(msg);
+                string msg = _orgUnitService.Insert(orgUnit);
+                if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
 
@@ -63,7 +56,7 @@ namespace QLDN.Controllers
         // GET: OrgUnits/Edit/5
         public ActionResult Edit(int id)
         {
-            OrgUnit orgUnit = orgUnitService.GetOne(id);
+            OrgUnit orgUnit = _orgUnitService.GetOne(id);
             if (orgUnit == null)
             {
                 return HttpNotFound();
@@ -80,7 +73,7 @@ namespace QLDN.Controllers
         {
             if (ModelState.IsValid)
             {
-                string msg = orgUnitService.Update(orgUnit.OrgUnitID, orgUnit);
+                string msg = _orgUnitService.Update(orgUnit.OrgUnitID, orgUnit);
                 if (msg.Length > 0) return View(msg);
                 return RedirectToAction("Index");
             }
@@ -90,7 +83,7 @@ namespace QLDN.Controllers
         // GET: OrgUnits/Delete/5
         public ActionResult Delete(int id)
         {
-            OrgUnit orgUnit = orgUnitService.GetOne(id);
+            OrgUnit orgUnit = _orgUnitService.GetOne(id);
             if (orgUnit == null)
             {
                 return HttpNotFound();
@@ -103,7 +96,7 @@ namespace QLDN.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            string msg = orgUnitService.Remove(id);
+            string msg = _orgUnitService.Remove(id);
             if (msg.Length > 0) return View(msg);
             return RedirectToAction("Index");
         }
