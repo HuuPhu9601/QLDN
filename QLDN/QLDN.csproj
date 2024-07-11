@@ -143,17 +143,33 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Manager.cs" />
+    <Compile Include="Models\BaseModels\BaseReportTemplate.cs" />
+    <Compile Include="Models\BaseModels\Excelmport.cs" />
+    <Compile Include="Models\BaseModels\ExportExcel.cs" />
+    <Compile Include="Models\BaseModels\IExport.cs" />
+    <Compile Include="Models\BaseModels\IImport.cs" />
+    <Compile Include="Models\BaseModels\IObjectIO.cs" />
+    <Compile Include="Models\BaseModels\IReportGenerator.cs" />
+    <Compile Include="Models\BaseModels\TextImport.cs" />
+    <Compile Include="Models\ManagerModels\Manager.cs" />
     <Compile Include="Controllers\ManagersController.cs" />
-    <Compile Include="Models\OrgUnit.cs" />
+    <Compile Include="Models\ManagerModels\ManagerExportExcel.cs" />
+    <Compile Include="Models\ManagerModels\ManagerImportExcel.cs" />
+    <Compile Include="Models\ManagerModels\ManagerReport.cs" />
+    <Compile Include="Models\OrgUnitModels\OrgExportExcel.cs" />
+    <Compile Include="Models\OrgUnitModels\OrgReport.cs" />
+    <Compile Include="Models\OrgUnitModels\OrgUnit.cs" />
     <Compile Include="Models\OrgUnitManager.cs" />
     <Compile Include="Controllers\OrgUnitManagersController.cs" />
     <Compile Include="Controllers\OrgUnitsController.cs" />
+    <Compile Include="Models\OrgUnitModels\OrgImportExcel.cs" />
     <Compile Include="Models\OrgUnitStaff.cs" />
     <Compile Include="Controllers\OrgUnitStaffsController.cs" />
     <Compile Include="Models\QLDN.cs" />
-    <Compile Include="Models\Staff.cs" />
+    <Compile Include="Models\StaffModels\Staff.cs" />
     <Compile Include="Controllers\StaffsController.cs" />
+    <Compile Include="Models\StaffModels\StaffExportExcel.cs" />
+    <Compile Include="Models\StaffModels\StaffImportExcel.cs" />
     <Compile Include="Models\StatusType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataProvider.cs" />
