@@ -10,7 +10,7 @@ namespace QLDN.Models.BaseModels
 
         string Insert(T obj);
 
-        string UnInsert(T obj);
+        string Update(T obj);
 
         string Delete(T obj);
     }

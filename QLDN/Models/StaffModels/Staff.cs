@@ -1,16 +1,19 @@
 ﻿using QLDN.Models.BaseModels;
+using QLDN.Models.StaffModels;
 using System.Collections.Generic;
 using System.Data;
 
 namespace QLDN.Models
 {
-    public class Staff : IObjectIO<Staff>
+    public class Staff : AssignStaffOrgUnit, IStaff
     {
         private static Staff _ins;
         public static Staff Ins { get { if (_ins == null) _ins = new Staff(); return _ins; } set { _ins = value; } }
         public int StaffID { get; set; }
 
         public int ManagerID { get; set; }
+
+        public int JobPositionID { get; set; }
 
         public string StaffName { get; set; }
 
@@ -29,6 +32,58 @@ namespace QLDN.Models
             StatusID = StatusType.Acctive;
         }
 
+        #region Nhân viên
+        public override void AssignMultiStaffToAOrgUnit()
+        {
+            //Thực hiện thêm nhiều nhân viên vào một đơn vị
+        }
+
+        public override void AssignStaffToMultiOrgUnit()
+        {
+            //Thêm một nhân viên vào nhiều đơn vị
+        }
+
+        public override void MoveStaffToAOtherOrgUnit()
+        {
+            //Điều chuyển nhân viên từ đơn vị này sang đơn vị khác
+        }
+
+        public void AssignStaffToAManager()
+        {
+            //Thêm nhân viên cho một quản lý
+        }
+        public List<Staff> GetOtherStaffOfStaff()
+        {
+            //Lấy ra danh sách đồng nghiệp của nhân viên
+            return new List<Staff>();
+        }
+
+        public bool CheckExistedStaffInAOrgUnit()
+        {
+            //Kiểm tra nhân viên đã có trong đơn vị chưa?
+            return true;
+        }
+
+        public bool HasManagerOfStaff()
+        {
+            //Kiểm tra nhân viên đã có quản lý chưa?
+            return true;
+        }
+
+        public List<Staff> GetStaffOfOrgUnit()
+        {
+            //Lấy ra danh sách nhân viên của một đơn vị
+            return new List<Staff>();
+        }
+
+        public List<Staff> GetStaffsOfManager()
+        {
+            //Lấy ra danh sách nhân viên của một manager
+            return new List<Staff>();
+        }
+        #endregion
+
+        #region CRUD
         public DataTable GetAll()
         {
             return new DataTable();
@@ -44,7 +99,7 @@ namespace QLDN.Models
             return string.Empty;
         }
 
-        public string UnInsert(Staff obj)
+        public string Update(Staff obj)
         {
             return string.Empty;
         }
@@ -53,5 +108,6 @@ namespace QLDN.Models
         {
             return string.Empty;
         }
+        #endregion
     }
 }

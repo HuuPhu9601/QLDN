@@ -143,9 +143,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BaseModels\CheckMaxQtyAndAssignJobPosition.cs" />
+    <Compile Include="Models\BaseModels\IAcceptInsertToAOrgUnit.cs" />
+    <Compile Include="Models\BaseModels\IAssignStaffOrgUnit.cs" />
     <Compile Include="Models\BaseModels\IObjectIO.cs" />
+    <Compile Include="Models\JobPositionModels\AssignJobPositon.cs" />
+    <Compile Include="Models\JobPositionModels\IJobPosition.cs" />
+    <Compile Include="Models\JobPositionModels\JobPosition.cs" />
+    <Compile Include="Models\ManagerModels\IManager.cs" />
     <Compile Include="Models\ManagerModels\Manager.cs" />
     <Compile Include="Controllers\ManagersController.cs" />
+    <Compile Include="Models\OrgUnitModels\IOrgUnit.cs" />
     <Compile Include="Models\OrgUnitModels\OrgUnit.cs" />
     <Compile Include="Models\OrgUnitManager.cs" />
     <Compile Include="Controllers\OrgUnitManagersController.cs" />
@@ -153,6 +161,7 @@
     <Compile Include="Models\OrgUnitStaff.cs" />
     <Compile Include="Controllers\OrgUnitStaffsController.cs" />
     <Compile Include="Models\QLDN.cs" />
+    <Compile Include="Models\StaffModels\IStaff.cs" />
     <Compile Include="Models\StaffModels\Staff.cs" />
     <Compile Include="Controllers\StaffsController.cs" />
     <Compile Include="Models\StatusType.cs" />

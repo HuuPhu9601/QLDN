@@ -1,10 +1,11 @@
-﻿using QLDN.Models.BaseModels;
+﻿using QLDN.Models.JobPositionModels;
+using QLDN.Models.OrgUnitModels;
 using System.Collections.Generic;
 using System.Data;
 
 namespace QLDN.Models
 {
-    public class OrgUnit : IObjectIO<OrgUnit>
+    public class OrgUnit : AssignJobPositon, IOrgUnit
     {
         private static OrgUnit _ins;
         public static OrgUnit Ins { get { if (_ins == null) _ins = new OrgUnit(); return _ins; } set { _ins = value; } }
@@ -12,6 +13,8 @@ namespace QLDN.Models
         public int OrgUnitID { get; set; }
 
         public string OrgUnitName { get; set; }
+
+        public int ManagerID { get; set; }
 
         public string ManagerName { get; set; }
 
@@ -31,6 +34,78 @@ namespace QLDN.Models
             StatusID = StatusType.Acctive;
         }
 
+        #region Đơn vị
+        public bool CheckOnlyManagerOfOrg()
+        {
+            //Thực hiện kiểm tra khi thêm manager thì chỉ thêm đc một manager vào một org
+            return true;
+        }
+
+        public bool CheckOnlyParentOrg()
+        {
+            //Thực hiện kiểm tra một đơn vị chỉ có một đơn vị cha
+            return true;
+        }
+
+        public bool CheckExistedOrg()
+        {
+            //Thực hiện kiểm tra đơ vị đã tồn tại hay chưa?
+            return true;
+        }
+
+        public void AddMultiChildrenOrgToAOrgUnit()
+        {
+            //Thực hiện thêm nhiều đơn vị con vào trong một đơn vị
+        }
+
+        public void AddParentOrgToAOrgUnit()
+        {
+            //Thực hiện thêm đơn cha vào một đơn vị
+        }
+
+        public List<Staff> GetStaffOfOrgUnit()
+        {
+            //Lấy ra danh sách nhân viên trong đơn vị
+            return new List<Staff>();
+        }
+
+        public Manager GetManagerOfOrgUnit()
+        {
+            //Lấy ra thông tin manager của đơn vị
+            return new Manager();
+        }
+
+        public List<OrgUnit> GetOrgUnitsOfStaff()
+        {
+            //Lấy ra danh sách đơn vị của nhân viên
+            return new List<OrgUnit>();
+        }
+        #endregion
+
+        #region Vị trí công việc: //Thực hiện ghi đè theo nghiệp vụ org
+        public override bool CheckExistedPositionInOrgUnit()
+        {
+
+            return base.CheckExistedPositionInOrgUnit();
+        }
+
+        public override void AssignMultiStaffToAPosition()
+        {
+            base.AssignMultiStaffToAPosition();
+        }
+
+        public override void AssignStaffToAPosition()
+        {
+            base.AssignStaffToAPosition();
+        }
+
+        public override void AssignStaffToMultiPosition()
+        {
+            base.AssignStaffToMultiPosition();
+        }
+        #endregion
+
+        #region CRUD
         public DataTable GetAll()
         {
             return new DataTable();
@@ -47,7 +122,7 @@ namespace QLDN.Models
             return string.Empty;
         }
 
-        public string UnInsert(OrgUnit obj)
+        public string Update(OrgUnit obj)
         {
             //Thực hiện hành động update
             return string.Empty;
@@ -58,6 +133,8 @@ namespace QLDN.Models
             //Thực hiện hành động delete
             return string.Empty;
         }
+
+        #endregion
 
     }
 }
