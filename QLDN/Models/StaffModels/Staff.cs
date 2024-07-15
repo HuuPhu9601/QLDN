@@ -4,8 +4,8 @@ using System.Data;
 
 namespace QLDN.Models
 {
-    //Thực hiện nguyên tắc số 1: "Nguyên tắc trách nhiệm đơn lẻ" cho model đơn vị để làm rõ trách nhiệm của model
-    //Thực hiện nguyên tắc số 2: "Nguyên tắc đóng/ mở" cho model đơn vị để thực hiện CRUD cho cho model
+    //Thực hiện nguyên tắc số 1: "Nguyên tắc trách nhiệm đơn lẻ" cho model nhân viên để làm rõ trách nhiệm của model
+    //Thực hiện nguyên tắc số 2: "Nguyên tắc đóng/ mở" cho model nhân viên để thực hiện CRUD cho cho model
     public class Staff : IStaff
     {
         private static Staff _ins;
