@@ -2,6 +2,7 @@
 
 namespace QLDN.Models.JobPositionModels
 {
+    ////Thực hiện nguyên tắc số 1: "Nguyên tắc trách nhiệm đơn lẻ" cho model vị trí công việc
     public interface IJobPosition
     {
         void AddJobPosition(); //Thêm một vị trí công việc

@@ -2,10 +2,11 @@
 
 namespace QLDN.Models.JobPositionModels
 {
+    //Thực hiện nguyên tắc số 3: "Nguyên tắc thay thế Liskov" cho model đơn vị và quản lý để thực hiện thêm vị trí công việc cho nhân viên
+
     public abstract class AssignJobPositon : IJobPosition
     {
         #region Vị trí công việc
-
         public virtual void AddJobPosition()
         {
             //Thực hiện thêm một vị trí công việc

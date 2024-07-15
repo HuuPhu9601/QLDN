@@ -1,11 +1,14 @@
-﻿using QLDN.Models.JobPositionModels;
+﻿using QLDN.Models.BaseModels;
 using QLDN.Models.OrgUnitModels;
 using System.Collections.Generic;
 using System.Data;
 
 namespace QLDN.Models
 {
-    public class OrgUnit : AssignJobPositon, IOrgUnit
+    //Thực hiện nguyên tắc số 1: "Nguyên tắc trách nhiệm đơn lẻ" cho model đơn vị để làm rõ trách nhiệm của model
+    //Thực hiện nguyên tắc số 2: "Nguyên tắc đóng/ mở" cho model đơn vị để thực hiện CRUD cho cho model
+    //Thực hiện nguyên tắc số 3: "Nguyên tắc thay thế liskow" cho model OrgUnit để sử dụng đc các hàm base của abstract class "AssignStaffOrgUnit" và có thể ghi đè lại
+    public class OrgUnit : AssignStaffOrgUnit, IOrgUnit
     {
         private static OrgUnit _ins;
         public static OrgUnit Ins { get { if (_ins == null) _ins = new OrgUnit(); return _ins; } set { _ins = value; } }

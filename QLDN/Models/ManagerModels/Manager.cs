@@ -5,6 +5,9 @@ using System.Data;
 
 namespace QLDN.Models
 {
+    //Thực hiện nguyên tắc số 1: "Nguyên tắc trách nhiệm đơn lẻ" cho model quản lý để làm rõ trách nhiệm của model
+    //Thực hiện nguyên tắc số 2: "Nguyên tắc đóng/ mở" cho model quản lý để thực hiện CRUD cho cho model
+    //Thực hiện nguyên tắc số 3: "Nguyên tắc thay thế liskow" cho model Manager để sử dụng đc các hàm base của abstract class "AssignStaffOrgUnit" và có thể ghi đè lại
     public class Manager : AssignStaffOrgUnit, IManager
     {
         private static Manager _ins;

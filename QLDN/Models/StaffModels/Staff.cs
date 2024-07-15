@@ -1,11 +1,12 @@
-﻿using QLDN.Models.BaseModels;
-using QLDN.Models.StaffModels;
+﻿using QLDN.Models.StaffModels;
 using System.Collections.Generic;
 using System.Data;
 
 namespace QLDN.Models
 {
-    public class Staff : AssignStaffOrgUnit, IStaff
+    //Thực hiện nguyên tắc số 1: "Nguyên tắc trách nhiệm đơn lẻ" cho model đơn vị để làm rõ trách nhiệm của model
+    //Thực hiện nguyên tắc số 2: "Nguyên tắc đóng/ mở" cho model đơn vị để thực hiện CRUD cho cho model
+    public class Staff : IStaff
     {
         private static Staff _ins;
         public static Staff Ins { get { if (_ins == null) _ins = new Staff(); return _ins; } set { _ins = value; } }

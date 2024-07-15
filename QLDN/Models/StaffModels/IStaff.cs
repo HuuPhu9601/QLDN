@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace QLDN.Models.StaffModels
 {
+    //Thực hiện nguyên tắc số 1: "Nguyên tắc trách nhiệm đơn lẻ" cho model nhân viên
     public interface IStaff : IObjectIO<Staff>
     {
         void AssignStaffToAManager(); //Thêm một nhân viên cho một quản lý

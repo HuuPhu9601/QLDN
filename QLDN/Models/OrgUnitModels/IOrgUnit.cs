@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace QLDN.Models.OrgUnitModels
 {
+    //Thực hiện nguyên tắc số 1: "Nguyên tắc trách nhiệm đơn lẻ" cho model đơn vị
     public interface IOrgUnit : IObjectIO<OrgUnit>
     {
         bool CheckOnlyManagerOfOrg(); //Chỉ cho phép org chỉ có 1 manager duy nhất
